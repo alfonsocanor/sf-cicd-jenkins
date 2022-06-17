@@ -642,8 +642,6 @@ global class BestFitImplementation{//} implements vlocity_cmt.VlocityOpenInterfa
         coverage = '';
         coverage = '';
         coverage = '';
-    
-
     }
 
 }
