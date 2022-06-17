@@ -1,0 +1,90 @@
+<template>
+    <div class="slds-form-element" role="group" aria-labelledby="picklist-group-label">
+        <div class="slds-text-title_caps" style="text-align:center;">{comboboxTitle}</div>
+        <span id="picklist-group-label" class="slds-form-element__label slds-form-element__legend">Select Fields</span>
+        <div class="slds-form-element__control">
+            <div class="slds-dueling-list">
+                <div class="slds-assistive-text" id="drag-live-region" aria-live="assertive"></div>
+                <div class="slds-dueling-list__column">
+                <span class="slds-form-element__label" id="label-9">Child Object Fields</span>
+                <div class="slds-dueling-list__options" style="width: 200px; overflow:auto;">
+                    <ul style="width: fit-content;" aria-describedby="option-drag-label" aria-labelledby="label-9" aria-multiselectable="true" class="slds-listbox slds-listbox_vertical" role="listbox">
+                        <template for:each={leftTable} for:item="option">
+                            <li key={option.key} role="presentation" class="slds-listbox__item" data-name={option.label} data-colum="a" data-thekey={option.key} data-fieldname={option.fieldName} onclick={getValue}>
+                                <div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline" aria-selected="false" draggable="true" role="option" tabindex="0">
+                                <span class="slds-media__body">
+                                    <span class="slds-truncate" title="Option 1">{option.label}</span>
+                                </span>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+                </div>
+                <div class="slds-dueling-list__column">
+                    <button class="slds-button slds-button_icon slds-button_icon-container" title="Move Field to Right Column" onclick={toRight}>
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#right"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Move Field to Right Column</span>
+                    </button>
+                    <button class="slds-button slds-button_icon slds-button_icon-container" title="Move Field to Left Column" onclick={toLeft}>
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#left"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Move Field to Left Column</span>
+                    </button>
+                    <button class="slds-button slds-button_icon slds-button_icon-container" title="Order Field in the List: Up" onclick={toUp}>
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Order Field in the List: Up</span>
+                    </button>
+                    <button class="slds-button slds-button_icon slds-button_icon-container" title="Order Field in the List: Down" onclick={toDown}>
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                        </svg>                                
+                        <span class="slds-assistive-text">Order Field in the List: Down</span>
+                    </button>
+                </div>
+                <div class="slds-dueling-list__column">
+                    <template if:true={requiredOption}>
+                        <span class="slds-form-element__label" id="label-10"><span style="color:rgb(194, 57, 52)">*</span>Required / Field to display</span>
+                    </template>
+                    <template if:false={requiredOption}>
+                        <span class="slds-form-element__label" id="label-11"><span style="color:rgb(194, 57, 52)">*</span>Is an image / Fields to display</span>
+                    </template>
+                    <div class="slds-dueling-list__options rightColumnStyleValidation" style="width: 200px; overflow:auto;">
+                        <ul style="width: fit-content;" aria-describedby="option-drag-label" aria-labelledby="label-10" aria-multiselectable="true" class="slds-listbox slds-listbox_vertical" role="listbox">
+                            <template for:each={rightTable} for:item="option">
+                                <li key={option.key} role="presentation" class="slds-listbox__item" data-name={option.label} data-colum="b" data-thekey={option.key} onclick={getValue}>
+                                    <div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline" aria-selected="false" draggable="true" role="option" tabindex="0">
+                                        <template if:true={requiredOption}>
+                                            <template if:true={option.required}>
+                                                <lightning-input type="checkbox" checked name="input1" data-name={option.label} data-thekey={option.key} onchange={handleRequired}></lightning-input>
+                                            </template>
+                                            <template if:false={option.required}>
+                                                <lightning-input type="checkbox" name="input1" data-name={option.label} data-thekey={option.key} onchange={handleRequired}></lightning-input>
+                                            </template>
+                                        </template>
+                                        <template if:true={imageOption}>
+                                            <template if:true={option.isImage}>
+                                                <lightning-input type="checkbox" checked name="input1" data-name={option.label} data-thekey={option.key} onchange={handleImage}></lightning-input>
+                                            </template>
+                                            <template if:false={option.isImage}>
+                                                <lightning-input type="checkbox" name="input1" data-name={option.label} data-thekey={option.key} onchange={handleImage}></lightning-input>
+                                            </template>
+                                        </template>
+                                        <span class="slds-media__body">
+                                            <span class="slds-truncate" title="Option 1">{option.label}</span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</template>

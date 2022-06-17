@@ -1,0 +1,9 @@
+.fridge-icon {
+    --sds-c-icon-color-foreground-default: rgb(122, 159, 71, 1);
+    --sds-c-icon-color-background: rgba(128, 128, 128, 0);
+}
+
+.not-fridge-icon {
+    --sds-c-icon-color-foreground-default: rgb(255, 0, 0);
+    --sds-c-icon-color-background: rgba(128, 128, 128, 0);
+}

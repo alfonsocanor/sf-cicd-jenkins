@@ -1,3 +1,0 @@
-<apex:page standardcontroller="Quote" extensions="QuotePdfControllerUnmanaged" action="{!savePDF}">>
-
-</apex:page>

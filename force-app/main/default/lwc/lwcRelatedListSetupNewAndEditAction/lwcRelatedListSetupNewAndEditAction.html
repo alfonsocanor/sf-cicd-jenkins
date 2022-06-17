@@ -1,0 +1,125 @@
+<template>
+    <div class="slds-grid slds-wrap slds-size_1-of-1" style="position: relative;">
+        <template if:true={isProcessing}>
+            <div style="z-index: 99;">
+                <lightning-spinner variant="brand" alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+        <div class="slds-col slds-grid slds-wrap slds-size_2-of-8 slds-p-left_small">
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-text-title_caps slds-m-around_x-small" style="text-align:center;">
+                    Related List Setup
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-combobox
+                    class="parentObject validateInput"
+                    name="object"
+                    label="Parent Object"
+                    value={parentValue}
+                    placeholder="Select Object"
+                    options={parentOptions}
+                    onchange={handleParentChange}
+                    required>
+                </lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-combobox
+                    class="childObject validateInput"
+                    name="object"
+                    label="Child Objects"
+                    placeholder="Select Object"
+                    value={childValue}
+                    options={childOptions}
+                    onchange={handleChildChange}
+                    required>
+                </lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-combobox
+                    class="childObject validateInput"
+                    name="object"
+                    label="Parent Field in Relates List"
+                    placeholder="Select Object"
+                    value={parentOfChildValue}
+                    options={parentOfChildOptions}
+                    onchange={handleParentOfChildChange}
+                    required>
+                </lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-combobox 
+                    class="childObject validateInput"
+                    name="object"
+                    label="Child Related List API Name"
+                    placeholder="Select Object"
+                    value={childRelatedListApiNameValue}
+                    options={childRelatedListApiNameOptions}
+                    onchange={handlechildRelatedListApiNameChange}
+                    required>
+                </lightning-combobox>
+            </div>
+<!--             <div class="slds-col slds-size_1-of-1">
+                <lightning-input 
+                    label="Parent Field in Relates List"    
+                    value={parentOfTheChild}
+                    variant="label-inline"
+                    read-only>
+                </lightning-input>
+            </div> -->
+<!--             <hr>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-textarea 
+                    name="soqlValue" 
+                    label="SOQL" 
+                    value={soqlRelatedListValue}
+                    onchange={handleSOQLValue}>
+                </lightning-textarea>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <p class="slds-m-top_medium">
+                    2nd Master-detail field (From SOQL): {masterDetailSOQL}
+                </p>
+            </div> -->
+        </div>
+        <div class="slds-col slds-size_3-of-8 slds-p-left_large">
+            <div class="slds-align_absolute-center slds-m-top_small">
+                <c-lwc-custom-combo-box 
+                    class="relatedListFieldsCombobox" 
+                    onupdatecolumns={handleUpdateColumnsFromChild} 
+                    left-table-data={leftTableUser} 
+                    right-table-data={rightTableUser}
+                    required-option={tableOptionRequired}
+                    image-option="true"
+                    combobox-title="Related List Fields"
+                    left-table-name="leftTableUser"
+                    right-table-name="rightTableUser">
+                </c-lwc-custom-combo-box>
+            </div>
+        </div>
+        <div class="slds-col slds-size_3-of-8">
+            <div class="slds-align_absolute-center slds-m-top_small">
+                <c-lwc-custom-combo-box 
+                    class="relatedListFieldsCombobox" 
+                    onupdatecolumns={handleUpdateColumnsFromChild} 
+                    left-table-data={createLeftTable} 
+                    right-table-data={createRightTable}
+                    required-option={createOptionRequired}
+                    combobox-title="Create Fields"
+                    left-table-name="createLeftTable"
+                    right-table-name="createRightTable">
+                </c-lwc-custom-combo-box>
+            </div>
+        </div>
+        <div class="slds-col slds-grid slds-size_1-of-1">
+            <div class="slds-m-top_small slds-align_absolute-center">
+                <lightning-button class="slds-m-around_small" variant="brand-outline" label="Cancel" 
+                    onclick={handleCancel}>
+                </lightning-button>
+                <lightning-button class="slds-m-around_small" variant="brand" label="Save" 
+                    onclick={handleSave}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+</template>

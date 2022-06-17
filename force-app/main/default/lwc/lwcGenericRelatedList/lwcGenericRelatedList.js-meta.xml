@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage,lightning__AppPage,lightningCommunity__Default">
+            <property name="recordId" type="String" label="Record ID" description="(Only for Community) = {!recordId}"/>
+            <property name="isCommunity" type="Boolean" label="Community" description="Mark as true if you are in community"/>
+            <property name="setupId" type="String" label="Related List Setup Id" description="Id of the Related List Setup record" default="" required="true"/>
+            <property name="headerName" type="String" label="Header Name" description="Name displayed in the header when using full layout" default="New Record"/>
+            <property label="Button Label" name="buttonLabel" type="String" description="Label of the button" default="New"/>
+            <property label="Images size" name="imgWidth" type="Integer" description="Enter the number of the size of all the field images (In pixels)"/>
+            <property label="Create record mode" name="createMode" type="String" datasource="Full-Layout,Inline,Custom LWC" 
+                description="Full Layout: Will display a modal with all the field from the default layout / Inline: Will Display inline fields as selected in the table"/>
+            <property label="Related List Name" name="relatedListName" type="String" default="Add related list name"/>
+            <property label="Number of rows to display" name="numberOfRowsToDisplay" type="Integer" default="2"
+                description="If there are more records than the number enter, a \'View All'\ link in the footer appears.It redirects you to all the records"/>
+            <property label="Icon" name="icon" type="String" default="standard:default"
+                description="Go to: https://www.lightningdesignsystem.com/icons/ - Select type and name Ex: action:add_contact"/>
+            <property label="Show Message if there are no records" name="showMessageNoRecords" type="Boolean" default="false"/>
+            <property label="Message to display if therea re no records" name="messageNoRecords" type="String"/>
+            <property label="Display Save and New button" name="saveAndNew" type="Boolean" default="false" description="Activate the Save and New functionality"></property>
+            <property label="Navigate to the record after insert" name="navigateToRecordCreated" type="Boolean" default="false" description="If it is mark as true, youl will navigate a the new record inserted"></property>
+            <property label="Column Widths Mode" name="columnWidthsMode" type="String" datasource="fixed,auto" default="fixed" 
+                description="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/specification"></property>
+            <property label="Display actions (Edit, Delete)" name="displayActions" type="Boolean" default="true"/>
+            <property label="Add Where Statement" name="hasSoqlWhere" type="Boolean" default="false"/>
+            <property label="Where statement" name="soqlWhere" type="String" placeholder="AND..." description="Must start with AND, for example 'AND Status__c = 'Active''"/>
+            <property label="Parent Object API Name (Deprecated)" name="parentName" type="String" description="deprecated"/> 
+            <property label="Child Object API Name (Deprecated)" name="childName" type="String" description="deprecated"/> 
+            <property label="Relationship API Name (Deprecated)" name="relationshipApiName" type="String" description="deprecated"/>
+            <property label="Parent Child Field Relationship API Name (Deprecated)" name="parentChildFieldRelationship" type="String" description="deprecated"/> 
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

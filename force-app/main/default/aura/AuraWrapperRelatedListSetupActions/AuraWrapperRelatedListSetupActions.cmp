@@ -1,0 +1,4 @@
+<aura:component implements="lightning:actionOverride,force:hasRecordId" access="global">
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <c:lwcRelatedListSetupNewAndEditAction recordId="{!v.recordId}" onclosetab="{!c.handleCloseTab}"/>
+</aura:component>

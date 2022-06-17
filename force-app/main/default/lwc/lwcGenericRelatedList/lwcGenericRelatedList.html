@@ -1,0 +1,224 @@
+<template>
+  <article class="slds-card slds-page-header" onclick={mousePosition} style="padding: 0; border: 1px solid #dddbda; border-radius: 3px;">
+    <div class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate slds-p-top_x-small slds-p-left_small slds-p-right_small" style="position:relative;">
+        <template if:false={isNew}>
+          <div class="slds-media__figure">
+            <lightning-icon icon-name={icon} alternative-text="Approved" title="Approved" size="small"></lightning-icon>
+          </div>
+          <div class="slds-media__body">
+            <h2 class="slds-card__header-title">
+              <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title={relatedListName}>
+                <span>{relatedListName} &nbsp; ({totalRecords})</span>
+              </a>
+            </h2>
+          </div>
+        </template>
+        <template if:true={isLoadingCreate}>
+          <div class="exampleHolder">
+              <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+          </div>
+        </template>
+        <template if:true={isNew}>
+            <lightning-record-edit-form 
+              object-api-name={childName} 
+              onsuccess={handleRecordCreated}
+              style="width:100%">
+              <lightning-messages></lightning-messages>
+                <div style="
+                  overflow-x: auto; 
+                  height:210px;">
+                  <div class="slds-grid" style="padding-left:22px">
+                    <template for:each={fieldList} for:item="field">
+                        <div key={field} class={field.class} style="text-align: center; min-width:140px;">
+                          <template if:true={field.required}>
+                            </span><span class="slds-form-element__label"><span style="color:red">*&nbsp;</span>{field.label}</span>
+                            <lightning-input-field required variant="label-hidden" value={field.value} field-name={field.fieldName}></lightning-input-field>
+                          </template>
+                          <template if:false={field.required}>
+                            <span class="slds-form-element__label">{field.label}</span>
+                            <lightning-input-field variant="label-hidden" value={field.value} field-name={field.fieldName}></lightning-input-field>
+                          </template>
+                        </div>
+                    </template>
+                  </div>
+                  <div style="text-align: center;">
+                    <lightning-button style="margin-right:10px;" onclick={handleCancel} type="submit" variant="neutral" label="Cancel"></lightning-button>
+                    <lightning-button type="submit" variant="brand" label="Create"></lightning-button>
+                  </div>
+                </div>
+              </lightning-record-edit-form>                        
+        </template>
+        <template if:true={isNewFullLayout}>
+          <lightning-record-edit-form 
+            object-api-name={childName}
+            record-id={recordId2Edit}
+            onsuccess={handleRecordCreated}
+            onerror={handleErrorCreation}
+            onsubmit={handleRecordSubmit}
+            onload={handleOnLoad}
+            columns="1"
+            style="width:100%">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" style="font-size:0.90rem !important;">
+              <div class="slds-modal__container">
+                <header class="slds-modal__header slds-text-heading_medium">
+                    <div>{headerName}</div>
+                </header>
+                <div class="slds-modal__content scrollToTheTop slds-p-around_medium" id="modal-content-id-1" style="height:70vh">
+                    <div style="position: relative;">
+                      <lightning-messages
+                      severity="warning"></lightning-messages>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-size_1-of-1">
+                      <template for:each={fieldList} for:item='field'>
+                          <div key={field} class="slds-col slds-size_1-of-1 slds-p-around_xx-small">
+                            <template if:true={field.required}>
+                            </span><span class="slds-form-element__label"><span style="color:red">*&nbsp;</span>{field.label}</span>
+                              <lightning-input-field required variant="label-hidden" value={field.value} field-name={field.fieldName}></lightning-input-field>
+                            </template>
+                            <template if:false={field.required}>
+                              <span class="slds-form-element__label">{field.label}</span>
+                              <lightning-input-field variant="label-hidden" value={field.value} field-name={field.fieldName}></lightning-input-field>
+                            </template>
+                          </div>
+                      </template>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer" style="position:relative">
+                  <template if:true={isCreating}>
+                    <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+                  </template>
+                  <div style="text-align: center; margin-top:12px;">
+                    <lightning-button style="margin-right:10px;" onclick={handleCancel} variant="neutral" label="Cancel"></lightning-button>
+                    <template if:true={saveAndNew}>
+                      <lightning-button style="margin-right:10px;" type="submit" onclick={handleSaveAndNew} variant="neutral" label="Save & New"></lightning-button>
+                    </template>
+                    <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
+                  </div>
+                </footer>              
+              </div>
+            </section>
+          </lightning-record-edit-form>
+          <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <template if:true={validateIfNoRecords}>
+          <div style="width:50%; position:relative">
+            {messageNoRecords}
+          </div>
+        </template>
+        <template if:false={isTableMode}>
+          <template if:false={isNew}>
+            <div class="slds-no-flex">
+                <lightning-button-icon 
+                  icon-name="utility:refresh"  
+                  alternative-text="refresh" 
+                  title="refresh"
+                  onclick={refreshTableAndPage}>
+                </lightning-button-icon>
+                <button onclick={handlerNewRecord} class="slds-button slds-button_neutral" style="margin-left: 4px;">{buttonLabel}</button>
+            </div>
+          </template>
+        </template>
+        <template if:true={aLoadError}>
+          <div class="slds-backdrop slds-backdrop_open slds-align_absolute-center" style="position:absolute; color:white;">
+            Oops! Related List Setup record don't exist. Validate Parent Object, Child Object and Parent Field in Page Builder Configuration
+          </div>
+        </template>
+      </header>
+    </div>
+    
+    <template if:true={newOverride}>
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container" style="width:70%; max-width:100%;">
+
+          <header class="slds-modal__header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeVisualForceWrapperModal} title="Close">
+              <lightning-icon class="closeModalIcon" icon-name="utility:close" alternative-text="close" title="close"></lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+          </header>
+          <div class="slds-modal__content" style="position:relative">
+            <template if:true={spinnerOnVisualforceWrapper}>
+                <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+            </template>
+            <iframe src={visualforceURL} scrolling="no" height="500px" width="100%" style="border:0; overflow:hidden !important;"></iframe>
+          </div>  
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <div class="picklistPosition">
+      <template if:true={isPickListEdit}>     
+          <div  class="slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+            <div class="slds-dropdown slds-dropdown_left">
+              <ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+                <template for:each={currentPicklist} for:item="picklistValue">
+                  <li onclick={handleOptionChanges} key={picklistValue.value} data-value={picklistValue.value} class="slds-dropdown__item" role="presentation">
+                    <a role="menuitem" tabindex="0">
+                      <span class="slds-truncate" title="Menu Item One">{picklistValue.value}</span>
+                    </a>
+                  </li>
+                </template>  
+              </ul>
+            </div>
+          </div>  
+      </template>
+    </div>
+
+    <template if:true={hasRecords}>
+      <div class="slds-card__body slds-card__body_inner datatableWidth" style="padding:0px; position:relative; margin:0; border-top: 1px solid #dddbda;">   
+        <template if:true={updatingTable}>
+            <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+        </template>
+        <template if:true={isTableMode}>
+          <c-lwc-generic-related-list-datatable          
+              class="dataTableTest"
+              key-field="Id"
+              data={data}
+              columns={columns}
+              onrowaction={handleRowAction}
+              onsave={handleInlineEdit}
+              draft-values={draftValues}
+              column-widths-mode={columnWidthsMode}
+              default-sort-direction={defaultSortDirection}
+              sorted-direction={sortDirection}
+              sorted-by={sortedBy}
+              onsort={onHandleSort}
+              suppress-bottom-bar
+              row-number-offset="0"
+              show-row-number-column
+              min-column-width="112">
+          </c-lwc-generic-related-list-datatable>
+        </template>
+        <template if:false={isTableMode}>
+          <c-lwc-generic-related-list-datatable
+            class="dataTableTest"
+            key-field="Id"
+            data={data}
+            columns={columns}
+            onrowaction={handleRowAction}
+            onsave={handleInlineEdit}
+            draft-values={draftValues}
+            column-widths-mode={columnWidthsMode}
+            hide-checkbox-column          
+            default-sort-direction={defaultSortDirection}
+            sorted-direction={sortDirection}
+            sorted-by={sortedBy}
+            onsort={onHandleSort}
+            show-row-number-column
+            min-column-width="112">
+          </c-lwc-generic-related-list-datatable> 
+        </template>
+        <template if:false={showTable}>
+          <div class="slds-backdrop slds-backdrop_open" style="position:absolute;"></div>
+        </template>
+      </div>
+    </template>
+    <template if:true={showFooterViewAll}>
+      <footer class="slds-card__footer" style="background-color: white; margin: 0; border:none;">
+        <a class="slds-card__footer-action" onclick={navigateToRelatedList}>View All</a>
+      </footer>
+    </template>
+  </article>
+</template>

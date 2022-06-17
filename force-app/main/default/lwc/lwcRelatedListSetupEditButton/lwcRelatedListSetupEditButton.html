@@ -1,0 +1,143 @@
+<template>
+    <template if:true={isProcessing}>
+        <lightning-spinner variant="brand" alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+    <div class="slds-grid slds-size_1-of-1">
+        <div class="slds-col slds-size_1-of-4"></div>
+        <div class="slds-col slds-grid slds-wrap slds-size_2-of-4">
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-box" style="text-align: left;">
+                    <h1>Related List Setup</h1>
+                </div>
+            </div>
+            <div class="slds-col slds-grid slds-size_1-of-1">
+                <div class="slds-col slds-size_1-of-4"></div>
+                <div class="slds-col slds-size_2-of-4">
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-combobox
+                                class="parentObject validateInput"
+                                name="object"
+                                label="Parent Object"
+                                value={parentValue}
+                                placeholder="Select Object"
+                                options={parentOptions}
+                                onchange={handleParentChange}
+                                required>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-combobox
+                            class="childObject validateInput"
+                            name="object"
+                            label="Child Objects"
+                            placeholder="Select Object"
+                            value={childValue}
+                            options={childOptions}
+                            onchange={handleChildChange}
+                            required>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-input 
+                            label="Parent Field in Relates List"    
+                            value={parentOfTheChild}
+                            read-only>
+                        </lightning-input>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-4"></div> 
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center slds-m-top_small">
+                <div class="slds-form-element" role="group" aria-labelledby="picklist-group-label">
+                    <span id="picklist-group-label" class="slds-form-element__label slds-form-element__legend">Select Fields</span>
+                    <div class="slds-form-element__control">
+                    <div class="slds-dueling-list">
+                        <div class="slds-assistive-text" id="drag-live-region" aria-live="assertive"></div>
+                        <div class="slds-dueling-list__column">
+                        <span class="slds-form-element__label" id="label-9">Child Object Fields</span>
+                        <div class="slds-dueling-list__options">
+                            <ul aria-describedby="option-drag-label" aria-labelledby="label-9" aria-multiselectable="true" class="slds-listbox slds-listbox_vertical" role="listbox">
+                                <template for:each={leftTable} for:item="option">
+                                    <li key={option.key} role="presentation" class="slds-listbox__item" data-name={option.label} data-colum="a" data-thekey={option.key} data-fieldname={option.fieldName} onclick={getValue}>
+                                        <div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline" aria-selected="false" draggable="true" role="option" tabindex="0">
+                                        <span class="slds-media__body">
+                                            <span class="slds-truncate" title="Option 1">{option.label}</span>
+                                        </span>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                        </div>
+                        <div class="slds-dueling-list__column">
+                            <button class="slds-button slds-button_icon slds-button_icon-container" title="Move Field to Right Column" onclick={toRight}>
+<!--                            <lightning-icon icon-name="utility:right" size="xx-small" alternative-text="Move right" title="Move right"></lightning-icon> -->
+                                <svg class="slds-button__icon" aria-hidden="true">
+                                    <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#right"></use>
+                                </svg>
+                                <span class="slds-assistive-text">Move Field to Right Column</span>
+                            </button>
+                            <button class="slds-button slds-button_icon slds-button_icon-container" title="Move Field to Left Column" onclick={toLeft}>
+<!--                            <lightning-icon icon-name="utility:left" size="xx-small" alternative-text="Move left" title="Move left"></lightning-icon> -->
+                                <svg class="slds-button__icon" aria-hidden="true">
+                                    <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#left"></use>
+                                </svg>
+                                <span class="slds-assistive-text">Move Field to Left Column</span>
+                            </button>
+                            <button class="slds-button slds-button_icon slds-button_icon-container" title="Order Field in the List: Up" onclick={toUp}>
+<!--                            <lightning-icon icon-name="utility:up" size="xx-small" alternative-text="Move up" title="Move up"></lightning-icon> -->
+                                <svg class="slds-button__icon" aria-hidden="true">
+                                    <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#up"></use>
+                                </svg>
+                                <span class="slds-assistive-text">Order Field in the List: Up</span>
+                            </button>
+                            <button class="slds-button slds-button_icon slds-button_icon-container" title="Order Field in the List: Down" onclick={toDown}>
+<!--                            <lightning-icon icon-name="utility:down" size="xx-small" alternative-text="Move down" title="Move down"></lightning-icon> -->
+                                <svg class="slds-button__icon" aria-hidden="true">
+                                    <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                                </svg>                                
+                                <span class="slds-assistive-text">Order Field in the List: Down</span>
+                            </button>
+                        </div>
+                        <div class="slds-dueling-list__column">
+                            <span class="slds-form-element__label" id="label-10"><span style="color:rgb(194, 57, 52)">*</span>Fields to display</span>
+                            <div class="slds-dueling-list__options rightColumnStyleValidation">
+                                <ul aria-describedby="option-drag-label" aria-labelledby="label-10" aria-multiselectable="true" class="slds-listbox slds-listbox_vertical" role="listbox">
+                                    <template for:each={rightTable} for:item="option">
+                                        <li key={option.key} role="presentation" class="slds-listbox__item" data-name={option.label} data-colum="b" data-thekey={option.key} onclick={getValue}>
+                                            <div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline" aria-selected="false" draggable="true" role="option" tabindex="0">
+<!--                                                 <lightning-input type="checkbox" name="input1"></lightning-input> -->
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate" title="Option 1">{option.label}</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-m-top_small slds-align_absolute-center">
+                <lightning-button class="slds-m-around_small" variant="brand-outline"  label="Cancel" onclick={handleCancel}></lightning-button>
+                <lightning-button class="slds-m-around_small" variant="brand" label="Save" onclick={handleSave}></lightning-button>
+            </div>
+        </div>
+        <div class="slds-col slds-size_1-of-4"></div> 
+    </div>
+</template>
+
+<!--     <div style="height: 300px;">
+        <lightning-datatable
+                key-field="value"
+                data={data}
+                show-row-number-column
+                suppress-bottom-bar
+                onrowselection={getSelectedName}
+                selected-rows={fieldsValue}
+                columns={columns}>
+        </lightning-datatable>
+    </div> -->

@@ -1,0 +1,13 @@
+<template>
+    <div style="padding-left:2rem;padding-top:5rem;position:relative">
+        <button class="slds-button slds-button_icon slds-button slds-button_icon" aria-describedby="help" aria-disabled="true" title="Help">
+          <svg class="slds-button__icon" aria-hidden="true">
+            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+          </svg>
+          <span class="slds-assistive-text">Help</span>
+        </button>
+        <div class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="help" style="position:absolute;top:-4px;left:15px">
+          <div class="slds-popover__body">{tip}</div>
+        </div>
+      </div>
+</template>

@@ -1,0 +1,10 @@
+.closeModalIcon{
+    --sds-c-icon-color-foreground-default: #FFFFFF;
+}
+.slds-form-element__label{
+    font-size: 0.90rem;
+}
+
+.form{
+    margin: 0 23px;
+}
