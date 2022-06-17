@@ -1,5 +1,5 @@
 public with sharing class RelatedListController {
-    //This is a jenkins test
+    //This is a jenkins test 2
     @AuraEnabled
     public static ObjectWrapper fetchData2(String infoJSON) {
         ComponentInfo info = (ComponentInfo)JSON.deserialize(infoJSON, ComponentInfo.class);
