@@ -1,0 +1,25 @@
+<template>
+    <div class="slds-col slds-size_1-of-1 slds-p-around_medium">
+        <h1>Sdk methods</h1>
+    </div>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+            <lightning-input class="getOffersCatalogCode" label="Catalog Code"></lightning-input>
+            <lightning-button variant="brand" label="getOffers" onclick={getOffers}></lightning-button>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+            <h2>getSelectedOffer Method</h2>
+            <span>These offer codes comes from the cagalog you selected in getOffers</span>
+            <lightning-button variant="brand" label="getSelectedOffer" onclick={getSelectedOffer}></lightning-button>
+        </div>      
+        <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+            <h2>getOffer Method</h2>
+            <lightning-button variant="brand" label="getOffer" onclick={getOffer}></lightning-button>
+        </div>     
+        <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+            <h2>getOfferLoop Method</h2>
+            The idea is to populate from a loop the property for later call the getSelectedOffer
+            <lightning-button variant="brand" label="getOfferLoop" onclick={getOfferLoop}></lightning-button>
+        </div>   
+    </div>
+</template>
